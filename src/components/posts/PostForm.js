@@ -7,7 +7,6 @@ import { CategoryContext } from "../category/CategoryProvider";
 export const PostForm = () => {
     const { addPost, editPost, getPosts, posts } = useContext(PostContext)
     const { categories, getCategories } = useContext(CategoryContext)
-    console.log('categories: ', categories);
     const session_user_id = parseInt(localStorage.getItem("rare_user_id"))
     
     
@@ -18,7 +17,6 @@ export const PostForm = () => {
       image_url: "",
       content: ""
     })
-    console.log('posts: ', posts);
 
 	  const history = useHistory();
     const {postId} = useParams();

@@ -78,9 +78,19 @@ export const PostProvider = (props) => {
             .then(res => res.json())
     }
 
+    const filterPostsByTag = ( tag ) => {
+
+        return fetch(`http://localhost:8000/posts/filterByTag?tag=${tag}`, {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("rare_user_id")}`
+            }
+        })
+            .then(res => res.json())
+    } // filterPostsBy
+
     return (
         <PostContext.Provider value={{
-            posts, getPosts, getPostsByUserId, addPost, editPost, getPostById, deletePost
+            posts, getPosts, getPostsByUserId, addPost, editPost, getPostById, deletePost, setPosts, filterPostsByTag
         }}>
             {props.children}
         </PostContext.Provider>

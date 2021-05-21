@@ -4,19 +4,14 @@ import { Link, useHistory, useParams } from "react-router-dom"
 import "./Post.css"
 
 export const PostList = () => {
-    const { posts, getPosts, getPostsByUserId, deletePost } = useContext(PostContext)
-    // const sortedPosts = posts?.sort((a, b) => a.publication_date > b.publication_date ? -1 : 1)
-    // console.log('posts: ', posts);
-        // console.log('posts: ');
-        // console.table(posts);
+    const { posts, getPosts, getPostsByUserId, deletePost, setPosts , filterPostsByTag} = useContext(PostContext)
     const CurrentUserId = localStorage.getItem("userId")
-    // console.log('userId: ', userId);
 
     const { userId } = useParams()
-    // console.log('userId: ', userId);
     const history = useHistory()
     
     const [isLoading, setIsLoading] = useState(true)
+    const [searchTerm, setSearchTerm] = useState("")
 
     
     
@@ -43,6 +38,13 @@ export const PostList = () => {
             .then(() => history.push(`/posts/user/${userId}`))
         }
     }
+
+    const handleInputChange = ( event ) => {
+        const newTerm = event.target.value
+        setSearchTerm(newTerm)
+        filterPostsByTag(newTerm).then(setPosts)
+    }
+
     // So we wouldn't have to worry about missing ?'s in the return component
     // and avoid the "cannot find label of undefined" error.
     if(isLoading) return (<div>Loading</div>)
@@ -52,13 +54,13 @@ export const PostList = () => {
         
         <div>
             <div> Ordered By Most Recent First</div>
+            <input className="tagSearchBar" type="text" placeholder={"Search by tag"} value={searchTerm} onChange={handleInputChange}/>
             {posts.map(post =>
 
                 <div className="post_card" key={post.id}>
                     <p><b>Title: </b><Link to={`/posts/detail/${post.id}`}> {post.title}</Link></p>
                     <p><b>Author: </b>{post.user.first_name} {post.user.last_name}</p>
                     <p><b>Category: </b>{post.category.label}</p>
-                    {/* .toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) */}
                     <p><b>Posted: </b>{post.publication_date}</p>
                     {/* <p><b>Posted: </b>{post.publication_date}</p>
                     <p><b>user id: </b>{post.user.id}</p> */}
