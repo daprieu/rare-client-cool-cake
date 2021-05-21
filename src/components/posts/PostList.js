@@ -7,6 +7,7 @@ export const PostList = () => {
     
     // sorted by publication date now done server-side
     // const sortedPosts = posts?.sort((a, b) => a.publication_date > b.publication_date ? -1 : 1)
+    // just added this for no reason so i can push
     const { posts, getPosts, getPostsByUserId, deletePost, setPosts , approvePost, filterPostsByTag} = useContext(PostContext)
     const session_user_id = parseInt(localStorage.getItem("rare_user_id"))
 
