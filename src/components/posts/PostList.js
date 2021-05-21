@@ -5,6 +5,9 @@ import "./Post.css"
 
 export const PostList = () => {
     const { posts, getPosts, getPostsByUserId, deletePost, setPosts , filterPostsByTag} = useContext(PostContext)
+
+    // sorted by publication date now done server-side
+    // const sortedPosts = posts?.sort((a, b) => a.publication_date > b.publication_date ? -1 : 1)
     const CurrentUserId = localStorage.getItem("userId")
 
     const { userId } = useParams()
