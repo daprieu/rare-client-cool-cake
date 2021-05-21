@@ -13,6 +13,8 @@ import { PostDetail } from "./posts/PostDetail"
 import { CommentProvider } from "./comment/CommentProvider"
 import { CommentList } from "./comment/CommentList"
 import { ReactionProvider } from "./reaction/ReactionProvider"
+import { ProfileList } from "./profiles/ProfileList"
+import { ProfileProvider } from "./profiles/ProfileProvider"
 
 export const ApplicationViews = () => {
     return <>
@@ -32,20 +34,20 @@ export const ApplicationViews = () => {
             </PostProvider>
 
             <PostProvider>
-            <CategoryProvider>
-                <Route exact path="/categories">
-                    <CategoryList />
-                </Route>
-                <Route exact path="/posting">
-                    <PostForm />
-                </Route>
-                <Route exact path="/posts/user/edit/:postId(\d+)">
-                    <PostForm />
-                </Route>
-                <Route exact path="/categories/create" render={() => {
-                    return <CategoryForm />
-                }}/>
-            </CategoryProvider>
+                <CategoryProvider>
+                    <Route exact path="/categories">
+                        <CategoryList />
+                    </Route>
+                    <Route exact path="/posting">
+                        <PostForm />
+                    </Route>
+                    <Route exact path="/posts/user/edit/:postId(\d+)">
+                        <PostForm />
+                    </Route>
+                    <Route exact path="/categories/create" render={() => {
+                        return <CategoryForm />
+                    }} />
+                </CategoryProvider>
             </PostProvider>
             
             <ReactionProvider>
@@ -73,6 +75,12 @@ export const ApplicationViews = () => {
                     <CommentList />
                 </Route>
             </CommentProvider>
+            
+            <ProfileProvider>
+                <Route exact path="/profiles">
+                    <ProfileList />
+                </Route>
+            </ProfileProvider>
         </main>
     </>
 }
