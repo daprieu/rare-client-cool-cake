@@ -5,6 +5,7 @@ import "./Post.css"
 
 export const PostList = () => {
     const { posts, getPosts, getPostsByUserId, deletePost, approvePost } = useContext(PostContext)
+    console.log('posts: ', posts);
     const session_user_id = parseInt(localStorage.getItem("rare_user_id"))
     const sortedPosts = posts.sort((a, b) => a.publication_date > b.publication_date ? 1 : -1)
     const CurrentUserId = localStorage.getItem("userId")
@@ -27,7 +28,6 @@ export const PostList = () => {
             } else {
                 getPostsByUserId(userId)
                     .then(() => setIsLoading(false))
-
             }
         } else {
             getPosts()
