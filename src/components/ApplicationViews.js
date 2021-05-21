@@ -15,6 +15,7 @@ import { CommentList } from "./comment/CommentList"
 import { ReactionProvider } from "./reaction/ReactionProvider"
 import { ProfileList } from "./profiles/ProfileList"
 import { ProfileProvider } from "./profiles/ProfileProvider"
+import { Profile } from "./profiles/Profile"
 
 export const ApplicationViews = () => {
     return <>
@@ -70,17 +71,20 @@ export const ApplicationViews = () => {
                 </Route>
             </TagProvider>
 
+            <ProfileProvider>
+                <Route exact path="/profiles">
+                    <ProfileList />
+                </Route>
+                <Route path="/profiles/:userId(\d+)/detail">
+                    <Profile />
+                </Route>
+            </ProfileProvider>
+            
             <CommentProvider>
                 <Route exact path="/posts/comments/:postId(\d+)">
                     <CommentList />
                 </Route>
             </CommentProvider>
-            
-            <ProfileProvider>
-                <Route exact path="/profiles">
-                    <ProfileList />
-                </Route>
-            </ProfileProvider>
         </main>
     </>
 }

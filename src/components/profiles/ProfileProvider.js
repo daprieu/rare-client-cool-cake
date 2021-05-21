@@ -6,14 +6,15 @@ export const ProfileProvider = (props) => {
     const [profile, setProfile] = useState({ events: [] })
     const [allProfiles, setAllProfiles] = useState([])
 
-    const getProfile = () => {
-        return fetch("http://localhost:8000/users", {
+    const getProfile = userId => {
+        return fetch(`http://localhost:8000/profiles/${userId}`, {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("rare_user_id")}`
             }
         })
             .then(response => response.json())
             .then(setProfile)
+            debugger
     }
     const getAllProfiles = () => {
         return fetch("http://localhost:8000/profiles", {
