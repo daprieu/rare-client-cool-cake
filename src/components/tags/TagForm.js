@@ -43,7 +43,7 @@ export const TagForm = () => {
     useEffect(() => {
         if (tagId) {
 
-            const tag = getTagById(tagId).then(setTag)
+            getTagById(tagId).then(setTag)
             setIsLoading(false)
         } else {
             setIsLoading(false)
