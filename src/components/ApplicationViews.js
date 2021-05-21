@@ -10,9 +10,13 @@ import { CategoryProvider } from "./category/CategoryProvider"
 import { CategoryForm } from "./category/CategoryForm"
 import { PostForm } from "./posts/PostForm"
 import { PostDetail } from "./posts/PostDetail"
+import { ProfileList } from "./profiles/ProfileList"
+import { ProfileProvider } from "./profiles/ProfileProvider"
+import { Profile } from "./profiles/Profile"
 import { CommentProvider } from "./comment/CommentProvider"
 import { CommentList } from "./comment/CommentList"
 import { ReactionProvider } from "./reaction/ReactionProvider"
+import { ReactionList } from "./reaction/ReactionList"
 
 export const ApplicationViews = () => {
     return <>
@@ -45,6 +49,9 @@ export const ApplicationViews = () => {
                 <Route exact path="/categories/create" render={() => {
                     return <CategoryForm />
                 }}/>
+                <Route exact path="/categories/edit/:categoryId(\d+)">
+                    <CategoryForm />
+                </Route>
             </CategoryProvider>
             </PostProvider>
             
@@ -68,11 +75,28 @@ export const ApplicationViews = () => {
                 </Route>
             </TagProvider>
 
+            <ProfileProvider>
+                <Route exact path="/profiles">
+                    <ProfileList />
+                </Route>
+                <Route path="/profiles/:userId(\d+)/detail">
+                    <Profile />
+                </Route>
+            </ProfileProvider>
+            
+            <PostProvider>
             <CommentProvider>
                 <Route exact path="/posts/comments/:postId(\d+)">
                     <CommentList />
                 </Route>
             </CommentProvider>
+            </PostProvider>
+
+            <ReactionProvider>
+                <Route exact path="/reactions">
+                    <ReactionList />
+                </Route>
+            </ReactionProvider>
         </main>
     </>
 }

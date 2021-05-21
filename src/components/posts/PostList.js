@@ -4,20 +4,20 @@ import { Link, useHistory, useParams } from "react-router-dom"
 import "./Post.css"
 
 export const PostList = () => {
-    const { posts, getPosts, getPostsByUserId, deletePost, setPosts , filterPostsByTag} = useContext(PostContext)
-
+    
     // sorted by publication date now done server-side
     // const sortedPosts = posts?.sort((a, b) => a.publication_date > b.publication_date ? -1 : 1)
+    const { posts, getPosts, getPostsByUserId, deletePost, setPosts , approvePost, filterPostsByTag} = useContext(PostContext)
+    const session_user_id = parseInt(localStorage.getItem("rare_user_id"))
     const CurrentUserId = localStorage.getItem("userId")
-
+    const isStaff = JSON.parse(localStorage.getItem("isStaff"))
+    
     const { userId } = useParams()
     const history = useHistory()
-    
     const [isLoading, setIsLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
 
-    
-    
+
     useEffect(() => {
         
         if (userId) {
@@ -42,15 +42,40 @@ export const PostList = () => {
         }
     }
 
+
     const handleInputChange = ( event ) => {
         const newTerm = event.target.value
         setSearchTerm(newTerm)
         filterPostsByTag(newTerm).then(setPosts)
     }
 
+
+    const approveButton = post => {
+
+        if (isStaff) {
+
+            if (post.approved) {
+                return (
+                    <button type="button" key={`unApprove--${post.id}`} onClick={(e) => {
+                        e.preventDefault()
+                    }}>Un-Approve</button>
+                )
+            } else {
+                return (
+                    <button type="button" key={`approve--${post.id}`} onClick={(e) => {
+                        e.preventDefault()
+                        approvePost(post)
+                    }}>Approve</button>
+                )
+            }
+
+        }
+    }
+
+
     // So we wouldn't have to worry about missing ?'s in the return component
     // and avoid the "cannot find label of undefined" error.
-    if(isLoading) return (<div>Loading</div>)
+    if (isLoading) return (<div>Loading</div>)
 
     
     return (<>
@@ -62,12 +87,31 @@ export const PostList = () => {
 
                 <div className="post_card" key={post.id}>
                     <p><b>Title: </b><Link to={`/posts/detail/${post.id}`}> {post.title}</Link></p>
-                    <p><b>Author: </b>{post.user.first_name} {post.user.last_name}</p>
+                    <p><b>Author: </b><Link to={`profiles/${post.user.id}/detail`}>{post.user.first_name} {post.user.last_name}</Link></p>
                     <p><b>Category: </b>{post.category.label}</p>
                     <p><b>Posted: </b>{post.publication_date}</p>
                     {/* <p><b>Posted: </b>{post.publication_date}</p>
                     <p><b>user id: </b>{post.user.id}</p> */}
 
+                    {
+                        session_user_id === post.user_id
+                            ? <button >
+                                <Link to={{
+                                    pathname: `/posts/user/edit/${post.id}`
+                                }}>edit</Link>
+                            </button>
+                            : ""
+                    }
+                    {
+                        session_user_id === post.user_id
+                            ?
+                            <button type="button" id="deletePost" onClick={(e) => {
+                                e.preventDefault()
+                                handleDelete(post.id)
+                            }}>Delete</button>
+                            : <></>
+                    }
+                        {approveButton(post)}
                     {
                         parseInt(CurrentUserId)  === post.user.id
                         ? <button >
@@ -91,6 +135,3 @@ export const PostList = () => {
         
     </>)
 }
-
-
-
