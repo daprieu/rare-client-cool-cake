@@ -57,9 +57,11 @@ export const ApplicationViews = () => {
             
             <ReactionProvider>
             <PostProvider>
+                <TagProvider>
                 <Route exact path="/posts/detail/:postId(\d+)">
                     <PostDetail />
                 </Route>
+                </TagProvider>
             </PostProvider>
             </ReactionProvider>
 
