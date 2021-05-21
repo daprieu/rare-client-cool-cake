@@ -38,9 +38,21 @@ export const PostDetail = () => {
                     }
                 }
                 setReactions(newReactions)
+            } else if(res.statusText === "No Content"){
+                removeReaction({
+                    postId: parseInt(postId),
+                    reactionId: parseInt(reactionId)
+                })
+                let newReactions = [...reactions]
+                for(const reaction of newReactions){
+                    if(parseInt(reactionId) === reaction.id){
+                        reaction.counter--
+                    }
+                }
+                setReactions(newReactions)
             }
+            setIsLoading(false)
         })
-        setIsLoading(false)
     }
       
     useEffect(() => {
@@ -66,6 +78,7 @@ export const PostDetail = () => {
             setIsLoading(false)
         })
     }, [])
+    
         
     return (
         <>
@@ -80,7 +93,7 @@ export const PostDetail = () => {
                 }
                 <div className="post__content">{post.content}</div>
                 <div className="post__created_on">{new Date(post.publication_date).toLocaleDateString()}</div>
-                <div className="post__author__first_name">{post.user?.first_name} {post.user?.last_name}</div>
+                <div className="post__author__first_name"><Link to={`/profiles/${post.user?.id}/detail`}>{post.user?.first_name} {post.user?.last_name}</Link></div>
             </section>
         </>
     )
