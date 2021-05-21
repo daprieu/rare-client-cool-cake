@@ -86,6 +86,7 @@ export const PostProvider = (props) => {
             .then(res => res.json())
     } // filterPostsBy
 
+
     
     const approvePost = post => {
         return fetch(`http://localhost:8000/posts/${post.id}/approve`, {
@@ -102,7 +103,7 @@ export const PostProvider = (props) => {
 
     return (
         <PostContext.Provider value={{
-            posts, getPosts, getPostsByUserId, addPost, editPost, getPostById, deletePost, approvePost, filterPostsByTag
+            posts, getPosts, getPostsByUserId, addPost, editPost, getPostById, deletePost, approvePost, setPosts, filterPostsByTag
         }}>
             {props.children}
         </PostContext.Provider>

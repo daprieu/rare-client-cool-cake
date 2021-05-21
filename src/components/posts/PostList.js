@@ -4,10 +4,13 @@ import { Link, useHistory, useParams } from "react-router-dom"
 import "./Post.css"
 
 export const PostList = () => {
-    const { posts, getPosts, getPostsByUserId, deletePost, approvePost } = useContext(PostContext)
-    console.log('posts: ', posts);
+    
+    // sorted by publication date now done server-side
+    // const sortedPosts = posts?.sort((a, b) => a.publication_date > b.publication_date ? -1 : 1)
+    // just added this for no reason so i can push
+    const { posts, getPosts, getPostsByUserId, deletePost, setPosts , approvePost, filterPostsByTag} = useContext(PostContext)
     const session_user_id = parseInt(localStorage.getItem("rare_user_id"))
-    const sortedPosts = posts.sort((a, b) => a.publication_date > b.publication_date ? 1 : -1)
+
     const CurrentUserId = localStorage.getItem("userId")
     const isStaff = JSON.parse(localStorage.getItem("isStaff"))
 
@@ -15,10 +18,6 @@ export const PostList = () => {
     const history = useHistory()
     const [isLoading, setIsLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
-
-
-
-
 
 
     useEffect(() => {
@@ -44,6 +43,14 @@ export const PostList = () => {
         }
     }
 
+
+    const handleInputChange = ( event ) => {
+        const newTerm = event.target.value
+        setSearchTerm(newTerm)
+        filterPostsByTag(newTerm).then(setPosts)
+    }
+
+
     const approveButton = post => {
 
         if (isStaff) {
@@ -62,11 +69,6 @@ export const PostList = () => {
         }
     }
 
-    const handleInputChange = ( event ) => {
-        const newTerm = event.target.value
-        setSearchTerm(newTerm)
-        filterPostsByTag(newTerm).then(setPosts)
-    }
 
     // So we wouldn't have to worry about missing ?'s in the return component
     // and avoid the "cannot find label of undefined" error.
@@ -131,6 +133,3 @@ export const PostList = () => {
 
     </>)
 }
-
-
-
