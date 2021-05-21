@@ -5,13 +5,15 @@ import "./Post.css"
 
 export const PostList = () => {
     const { posts, getPosts, getPostsByUserId, deletePost } = useContext(PostContext)
-    const sortedPosts = posts?.sort((a, b) => a.publication_date > b.publication_date ? -1 : 1)
-    console.log('posts: ', posts);
+    // const sortedPosts = posts?.sort((a, b) => a.publication_date > b.publication_date ? -1 : 1)
+    // console.log('posts: ', posts);
+        // console.log('posts: ');
+        // console.table(posts);
     const CurrentUserId = localStorage.getItem("userId")
     // console.log('userId: ', userId);
 
     const { userId } = useParams()
-    console.log('userId: ', userId);
+    // console.log('userId: ', userId);
     const history = useHistory()
     
     const [isLoading, setIsLoading] = useState(true)
@@ -49,11 +51,15 @@ export const PostList = () => {
     return (<>
         
         <div>
-            {sortedPosts.map(post =>
+            <div> Ordered By Most Recent First</div>
+            {posts.map(post =>
+
                 <div className="post_card" key={post.id}>
                     <p><b>Title: </b><Link to={`/posts/detail/${post.id}`}> {post.title}</Link></p>
                     <p><b>Author: </b>{post.user.first_name} {post.user.last_name}</p>
                     <p><b>Category: </b>{post.category.label}</p>
+                    {/* .toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) */}
+                    <p><b>Posted: </b>{post.publication_date}</p>
                     {/* <p><b>Posted: </b>{post.publication_date}</p>
                     <p><b>user id: </b>{post.user.id}</p> */}
 
