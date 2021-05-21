@@ -87,6 +87,7 @@ export const PostProvider = (props) => {
     } // filterPostsBy
 
 
+    
     const approvePost = post => {
         return fetch(`http://localhost:8000/posts/${post.id}/approve`, {
             method: "PUT",

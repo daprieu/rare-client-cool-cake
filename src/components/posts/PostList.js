@@ -9,9 +9,10 @@ export const PostList = () => {
     // const sortedPosts = posts?.sort((a, b) => a.publication_date > b.publication_date ? -1 : 1)
     const { posts, getPosts, getPostsByUserId, deletePost, setPosts , approvePost, filterPostsByTag} = useContext(PostContext)
     const session_user_id = parseInt(localStorage.getItem("rare_user_id"))
+
     const CurrentUserId = localStorage.getItem("userId")
     const isStaff = JSON.parse(localStorage.getItem("isStaff"))
-    
+
     const { userId } = useParams()
     const history = useHistory()
     const [isLoading, setIsLoading] = useState(true)
@@ -19,26 +20,25 @@ export const PostList = () => {
 
 
     useEffect(() => {
-        
+
         if (userId) {
             if (userId !== CurrentUserId) {
                 setIsLoading(false)
             } else {
                 getPostsByUserId(userId)
-                .then(() => setIsLoading(false))
-
+                    .then(() => setIsLoading(false))
             }
         } else {
             getPosts()
-            .then(() => setIsLoading(false))
+                .then(() => setIsLoading(false))
         }
     }, [])
-    
-    const handleDelete = ( id ) => {
-        
-        if(window.confirm("Confirm Deletion")) {
+
+    const handleDelete = (id) => {
+
+        if (window.confirm("Confirm Deletion")) {
             deletePost(id, userId)
-            .then(() => history.push(`/posts/user/${userId}`))
+                .then(() => history.push(`/posts/user/${userId}`))
         }
     }
 
@@ -54,18 +54,14 @@ export const PostList = () => {
 
         if (isStaff) {
 
-            if (post.approved) {
-                return (
-                    <button type="button" key={`unApprove--${post.id}`} onClick={(e) => {
-                        e.preventDefault()
-                    }}>Un-Approve</button>
-                )
-            } else {
+            {
                 return (
                     <button type="button" key={`approve--${post.id}`} onClick={(e) => {
                         e.preventDefault()
                         approvePost(post)
-                    }}>Approve</button>
+                    }}> 
+                    {post.approved ? "Un-approve" : "Approve"}
+                    </button>
                 )
             }
 
@@ -77,9 +73,9 @@ export const PostList = () => {
     // and avoid the "cannot find label of undefined" error.
     if (isLoading) return (<div>Loading</div>)
 
-    
+
     return (<>
-        
+
         <div>
             <div> Ordered By Most Recent First</div>
             <input className="tagSearchBar" type="text" placeholder={"Search by tag"} value={searchTerm} onChange={handleInputChange}/>
@@ -111,27 +107,28 @@ export const PostList = () => {
                             }}>Delete</button>
                             : <></>
                     }
-                        {approveButton(post)}
+                    {approveButton(post)}
                     {
-                        parseInt(CurrentUserId)  === post.user.id
-                        ? <button >
-                            <Link to={{ pathname: `/posts/user/edit/${post.id}`
-                            }}>edit</Link>
-                        </button> 
-                        : ""
+                        parseInt(CurrentUserId) === post.user.id
+                            ? <button >
+                                <Link to={{
+                                    pathname: `/posts/user/edit/${post.id}`
+                                }}>edit</Link>
+                            </button>
+                            : ""
                     }
                     {
-                        parseInt(CurrentUserId)  === post.user.id 
-                        ?
-                        <button type="button" id="deletePost" onClick={(e) => {
-                            e.preventDefault()
-                            handleDelete(post.id)
-                        }}>Delete</button>
-                        : <></>
+                        parseInt(CurrentUserId) === post.user.id
+                            ?
+                            <button type="button" id="deletePost" onClick={(e) => {
+                                e.preventDefault()
+                                handleDelete(post.id)
+                            }}>Delete</button>
+                            : <></>
                     }
                 </div>
             )}
         </div>
-        
+
     </>)
 }
